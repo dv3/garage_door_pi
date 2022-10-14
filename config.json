@@ -1,0 +1,69 @@
+{
+    "config": {
+        "use_https": false,
+        "use_auth": true,
+        "use_alerts": true,
+        "use_openhab": false,
+        "use_ifttt": false,
+        "allow_api": false,
+        "api_key": "<static key here>"
+    },
+    "alerts": {
+        "time_to_wait": 10,
+        "alert_type": null,
+        "smtp": {
+            "smtphost": "<SMTP HOST>",
+            "smtpport": 587,
+            "smtp_tls": "True",
+            "username": "<USERNAME EMAIL ADDRESS>",
+            "password": "<PASSWORD>",
+            "to_email": "<TO EMAIL ADDRESS>",
+            "subject": "<EMAIL SUBJECT>"
+        },
+        "pushbullet": {
+            "access_token": "<ACCESS TOKEN>"
+        },
+        "pushover": {
+            "user_key": "<PUSHOVER USER KEY>",
+            "api_key": "<PUSHOVER API TOKEN/KEY>"
+        },
+        "telegram": {
+            "chat_id": "<CHAT_ID>",
+            "api_token": "<API_TOKEN>"
+        }
+    },
+    "homeassistant": {
+        "server": "",
+        "port": ""
+    },
+    "mqtt": {
+        "host": "host",
+        "port": "port",
+        "user": "user",
+        "password": "password",
+        "discovery": "true",
+        "discovery_prefix": "homeassistant",
+        "state_topic": "home-assistant/cover",
+        "command_topic": "home-assistant/cover/set"
+    },
+    "website": {
+        "port": 8081,
+        "port_secure": 8444,
+        "username": "user",
+        "password": "12345",
+        "ssl_key": "/home/pi/garage-door-controller-cert/localhost.key",
+        "ssl_cert": "/home/pi/garage-door-controller-cert/localhost.crt"
+    },
+    "door": {
+        "name": "main",
+        "relay_pin": 23,
+        "state_pin": 27,
+        "state_pin_closed_value": 0,
+        "approx_time_to_close": 15,
+        "approx_time_to_open": 15,
+        "invert_relay": "true",
+        "openhab_name": "g_door_left",
+        "ifttt_event_open": "g_door_left_open",
+        "ifttt_event_close": "g_door_left_close"
+    }
+}
