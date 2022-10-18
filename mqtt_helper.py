@@ -1,14 +1,18 @@
 import os
 import binascii
 import paho.mqtt.client as mqtt
-
+import garage_util
+import logging
 # Eclipse Paho MQTT Python client library
 # https://pypi.org/project/paho-mqtt/
 # https://www.eclipse.org/paho/index.php?page=clients/python/docs/index.php
 
+logger = logging.getLogger(__name__)
+
 
 class MQTT_Helper(object):
-    def _init__(self, config):
+    def _init__(self, config, door):
+        self.door = door
         host = config['mqtt']['host']
         port = int(config['mqtt']['port'])
         user = config['mqtt']['user']
@@ -34,7 +38,7 @@ class MQTT_Helper(object):
 
         # set topic
         if discovery is True:
-            base_topic = discovery_prefix + "/cover/" + config['door']['name']
+            base_topic = discovery_prefix + "/cover/" + door.name
             config_topic = base_topic + "/config"
             config['command_topic'] = base_topic + "/set"
             config['state_topic'] = base_topic + "/state"
@@ -55,31 +59,38 @@ class MQTT_Helper(object):
     # When paho disconnects and connects again, it won't resubscribe automatically.
     # That's why subscriptions should be made in the on_connect callback.
     def on_connect(self, client, userdata, flags, rc):
-        print("Connected with result code: %s", mqtt.connack_string(rc))
-        print("Listening for commands on %s", self.command_topic)
+        logger.info("Connected with result code: %s", mqtt.connack_string(rc))
+        logger.info("Listening for commands on %s", self.command_topic)
         # Start subscribe, with QoS level 0
         self.mqttc.subscribe(self.command_topic, 0)
 
     # callback when a PUBLISH message is received from the server.
     def on_message(self, client, userdata, msg):
-        print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
+        logger.info("mqtt on_message "+str(msg))
+        garage_util.execute_command(self.door, str(msg.payload))
 
     # callback when a message that was to be sent using the publish() call has
     # completed transmission to the broker.
     # This callback is important because even if the publish() call returns
     # success, it does not always mean that the message has been sent.
     def on_publish(self, client, userdata, mid):
-        print("mid: " + str(mid))
+        logger.info("mid: " + str(mid))
 
     # callback when the broker responds to a subscribe request.
     def on_subscribe(self, client, obj, mid, granted_qos):
-        print("Subscribed: " + str(mid) + " " + str(granted_qos))
+        logger.info("Subscribed: " + str(mid) + " " + str(granted_qos))
 
     def on_log(self, client, userdata, level, buf):
-        print(buf)
+        logger.info(buf)
+
+    # Callback per door that passes the doors state topic
+    def on_state_change(value, topic=self.state_topic):
+        logger("State change triggered: %s -> %s", topic, value)
+        # # Update the mqtt state topic
+        self.mqttc.publish(topic, value, retain=True)
 
 # Continue the network loop, exit when an error occurs
 # rc = 0
 # while rc == 0:
 #     rc = mqttc.loop()
-# print("rc: " + str(rc))
+# logger.info("rc: " + str(rc))

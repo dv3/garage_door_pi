@@ -30,6 +30,7 @@ class GarageDoor(object):
         self.relay_pin = config['relay_pin']
         self.state_pin = config['state_pin']
         self.id = config['id']
+        self.name = config['name']
         # state_pin_closed_value = normally_closed = 0
         self.state_pin_closed_value = config.get('state_pin_closed_value', 0)
         self.time_to_close = config.get('approx_time_to_close', 10)
