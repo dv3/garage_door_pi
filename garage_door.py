@@ -1,6 +1,13 @@
+#!/usr/bin/python3
+
 import time
 import RPi.GPIO as gpio
+import logging
+import sys
 from eventhook import EventHook
+
+logger = logging.getLogger(__name__)
+
 
 SHORT_WAIT = .2  # S (200ms)
 #
@@ -38,29 +45,34 @@ class GarageDoor(object):
         self.invert_relay = bool(config.get('invert_relay'))
 
         # Setup
-        self.state = None
+        self._state = None
         self.onStateChange = EventHook()
 
-        gpio.setwarnings(False)
-        # tell the GPIO module that we want to use
-        # the chip's pin numbering scheme
-        gpio.setmode(gpio.BCM)
-        # Set relay pin to output
-        gpio.setup(self.relay_pin, gpio.OUT)
-        # Set state pin to input
-        gpio.setup(self.state_pin, gpio.IN, pull_up_down=gpio.PUD_UP)
-        # add a change listener to the state pin
-        # tell the GPIO library to look out for an
-        # event on state_pin and deal with it by calling
-        # the stateChanged function
-        # The event_detected() function is designed to be used in a loop with
-        # other things, but unlike polling it is not going to miss the change
-        # in state of an input while the CPU is busy working on other things.
-        gpio.add_event_detect(self.state_pin, gpio.BOTH,
-                              callback=self.stateChanged, bouncetime=300)
+        try:
+            gpio.setwarnings(False)
+            # tell the GPIO module that we want to use
+            # the chip's pin numbering scheme
+            gpio.setmode(gpio.BCM)
+            # Set relay pin to output
+            gpio.setup(self.relay_pin, gpio.OUT)
+            # Set state pin to input
+            gpio.setup(self.state_pin, gpio.IN, pull_up_down=gpio.PUD_UP)
+            # add a change listener to the state pin
+            # tell the GPIO library to look out for an
+            # event on state_pin and deal with it by calling
+            # the stateChanged function
+            # The event_detected() function is designed to be used in a loop with
+            # other things, but unlike polling it is not going to miss the change
+            # in state of an input while the CPU is busy working on other things.
+            gpio.add_event_detect(self.state_pin, gpio.BOTH,
+                                  callback=self.stateChanged, bouncetime=300)
 
-        # Set default relay state to true (on)
-        gpio.output(self.relay_pin, self.invert_relay)
+            # Set default relay state to true (on)
+            gpio.output(self.relay_pin, self.invert_relay)
+        except:
+            logger.error("problem setting pins")
+            gpio.cleanup()
+            sys.exit(1)
 
     # Release rpi resources
     def __del__(self):
@@ -71,38 +83,53 @@ class GarageDoor(object):
     # changes or do things differently depending on the intended action
 
     def open(self):
-        if self.get_state == 'close':
-            self.press()
+        if self.state == 'close':
+            self.__press()
 
     def close(self):
-        if self.get_state == 'open':
-            self.press()
+        if self.state == 'open':
+            self.__press()
 
     def stop(self):
-        self.press()
+        self.__press()
 
-    # State is a read only property that actually gets its value from the pin
+    # State is a getter,read only property that actually gets its value from the pin
     @property
-    def get_state(self):
+    def state(self):
         # Read the mode from the config. Then compare the mode to the current state. IE.
         # If the circuit is normally closed and the state is 1 then the circuit is closed.
         # and vice versa for normally open
-        state = gpio.input(self.state_pin)
-        if state == self.state_pin_closed_value:
-            return 'close'
-        else:
-            return 'open'
+        try:
+            current_state = gpio.input(self.state_pin)
+            if current_state == self.state_pin_closed_value:
+                return 'close'
+            else:
+                return 'open'
+        except:
+            logger.error("problem reading sensor")
+            gpio.cleanup()
+            sys.exit(1)
 
-    # Mimick a button press by switching the gpio pin on and off quickly
-    def press(self):
-        gpio.output(self.relay_pin, not self.invert_relay)
-        time.sleep(SHORT_WAIT)
-        gpio.output(self.relay_pin, self.invert_relay)
+    # Mimick a button press by switching the gpio pin on and off quickly: triggerRelay
+    def __press(self):
+        try:
+            gpio.output(self.relay_pin, not self.invert_relay)
+            time.sleep(SHORT_WAIT)
+            gpio.output(self.relay_pin, self.invert_relay)
+        except:
+            logger.error("problem triggering Relay")
+            gpio.cleanup()
+            sys.exit(1)
 
     # Provide an event for when the state pin changes
     def stateChanged(self, channel):
-        if channel == self.state_pin:
-            # Had some issues getting an accurate value so we are going to wait for a short timeout
-            # after a statechange and then grab the state
-            time.sleep(SHORT_WAIT)
-            self.onStateChange.fire(self.state)
+        try:
+            if channel == self.state_pin:
+                # Had some issues getting an accurate value so we are going to wait for a short timeout
+                # after a statechange and then grab the state
+                time.sleep(SHORT_WAIT)
+                self.onStateChange.fire(self.state)
+        except:
+            logger.error("problem getting state change")
+            gpio.cleanup()
+            sys.exit(1)

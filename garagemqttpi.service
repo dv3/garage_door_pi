@@ -1,0 +1,14 @@
+[Unit]
+Description=Garage mqtt pi 
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=3
+User=%i
+WorkingDirectory=/home/pi/garage_door_pi
+ExecStart=/usr/bin/python -u /home/pi/garage_door_pi/main.py
+
+[Install]
+WantedBy=multi-user.target

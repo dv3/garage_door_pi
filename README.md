@@ -33,6 +33,21 @@ Config:
 state_pin_closed_value: 0
 
 -----------
+Software  
+
+Prereqs  
+- Raspberry pi 1
+- Python 3.x
+- pip
+
+Installation  
+- git clone 
+- pip install -r requirements.txt
+- edit the configuration.yaml to set up mqtt (See below)
+- python main.py
+- To start the server on boot run sudo bash autostart_systemd.sh
+
+-----------
 Mosquitto broker:
 
 In separate terminal windows do the following:
@@ -49,10 +64,15 @@ mosquitto_pub -t 'test/topic' -m 'helloWorld'
 
 ------------
 Links:
+https://github.com/shawn-peterson/GarageDoorPi
 https://github.com/andrewshilliday/garage-door-controller
 https://github.com/jerrod-lankford/GarageQTPi
 https://jpowcode.github.io/http_to_mqtt.html
 https://github.com/maddox/harmony-api
+https://github.com/nebhead/garage-zero
+https://www.driscocity.com/idiots-guide-to-a-raspberry-pi-garage-door-opener/
+https://github.com/ide/pico-garage-door-sensor/blob/main/src/debounce.py
+https://github.com/shrocky2/SiriGarage
 
 https://python-hassdevice.readthedocs.io/en/stable/_modules/hassdevice/devices.html
 
