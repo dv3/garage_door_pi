@@ -6,10 +6,16 @@ import logging
 # https://pypi.org/project/paho-mqtt/
 # https://www.eclipse.org/paho/index.php?page=clients/python/docs/index.php
 
+
+# QOS 0 messages are fire and forget so there is no acknowledgment and
+# thus no message ID is needed. The spec states "A PUBLISH Packet
+# MUST NOT contain a Packet Identifier if its QoS value is set to 0.".
+
 logger = logging.getLogger(__name__)
 
-
 # Execute the specified command for a door
+
+
 def execute_command(door, command):
     doorName = door.name
     logger.info("Executing command %s for door %s", command, doorName)
@@ -38,7 +44,7 @@ class MQTT_Helper(object):
 
         clientID = "MQTTGarageDoor_" + binascii.b2a_hex(os.urandom(6))
         self.mqttc = mqtt.Client(client_id=clientID,
-                                 clean_session=True, userdata=None, protocol=mqtt.MQTTv31)
+                                 clean_session=True, userdata=None, protocol=4)
 
         # Uncomment to enable debug messages
         #mqttc.on_log = on_log
@@ -61,6 +67,10 @@ class MQTT_Helper(object):
         self.mqttc.on_publish = self.on_publish
         self.mqttc.on_subscribe = self.on_subscribe
         self.mqttc.message_callback_add(self.command_topic, self.on_message)
+
+        #  Last Will & Testament feature is used by the MQTT client to tell the broker to publish a pre-defined message if the client disconnects.
+        self.mqttc.will_set(
+            self.state_topic, payload="offline", qos=0, retain=True)
 
         # connect
         self.mqttc.username_pw_set(user, password=password)
@@ -87,7 +97,8 @@ class MQTT_Helper(object):
         logger.info("Connected with result code: %s", mqtt.connack_string(rc))
         logger.info("Listening for commands on %s", self.command_topic)
         # Start subscribe, with QoS level 0
-        self.mqttc.subscribe(self.command_topic, 0)
+        self.mqttc.subscribe(self.command_topic,
+                             payload="online", qos=0, retain=True)
 
     # callback when a PUBLISH message is received from the server.
     def on_message(self, client, userdata, msg):
