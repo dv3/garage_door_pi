@@ -32,6 +32,8 @@ Config:
 # normally_closed is 0, normally open is 1
 state_pin_closed_value: 0
 
+----------
+Run pinout command
 -----------
 Software  
 
