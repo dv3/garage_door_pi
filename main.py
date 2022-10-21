@@ -50,10 +50,12 @@ def main():
     configs = parseConfig()
     door1 = GarageDoor(configs['door'])
     mqtt_client = MQTT_Helper(configs, door1)
-    # Blocking call that processes network traffic, dispatches callbacks and handles reconnecting.
-    # Other loop*() functions are available that give a threaded interface and a manual interface.
     try:
+        # Blocking call that processes network traffic, dispatches callbacks and handles reconnecting.
+        # Other loop*() functions are available that give a threaded interface and a manual interface.
         mqtt_client.loop_forever()
+    except KeyboardInterrupt:
+        mqtt_client.disconnect()
     finally:
         mqtt_client.disconnect()
         # conn.close()
