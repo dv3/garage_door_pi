@@ -33,7 +33,27 @@ Config:
 state_pin_closed_value: 0
 
 ----------
+https://lastminuteengineers.com/two-channel-relay-module-arduino-tutorial/
+
+Two channel relay:
+The relay module has two LEDs that indicate the status of the relay. When a relay is activated, the corresponding LED lights up.
+
+Control Pins:
+VCC pin provides power to the built-in optocouplers and, optionally, the relay’s electromagnet (if you keep the jumper in place). Connect it to the 5V pin on the Arduino.
+IN1 & IN2 pins control the relay. These are active low pins, which means that pulling them LOW activates the relay and pulling them HIGH deactivates it.
+Power Supply Selection Pins:
+JD-VCC provides power to the relay’s electromagnet. When the jumper is in place, JD-VCC is shorted to VCC, allowing the electromagnets to be powered by the Arduino’s 5V line. Without the jumper cap, you’d have to connect it to a separate 5V power source.
+VCC pin is shorted to the JD-VCC pin with the jumper cap on. Keep this pin disconnected if you remove the jumper.
+Output Terminals:
+COM terminal connects to the device you intend to control.
+NC terminal is normally connected to the COM terminal, unless you activate the relay, which breaks the connection.
+NO terminal is normally open, unless you activate the relay that connects it to the COM terminal.
+
+---------------
+
+Raspbian:
 Run pinout command
+
 -----------
 Software  
 
