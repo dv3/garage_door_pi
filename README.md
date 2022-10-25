@@ -33,6 +33,17 @@ Config:
 state_pin_closed_value: 0
 
 ----------
+https://www.amazon.com/Switch-Normally-Closed-Sensor-Applicable/dp/B07YW47395/ref=cm_cr_arp_d_product_top?ie=UTF8
+
+magnetic reed switch:
+brown : NO
+black : NC
+white : COM
+
+N.C. means Normally Closed: When the magnet together, the circuit is conductive( light on ); When the magnet separates, the circuit is not conductive ( light off );
+N.O. means Normally Open: When the magnet separates, the circuit is conductive( light on ); When the magnet together, the circuit is not conductive ( light off ).
+
+----------
 https://lastminuteengineers.com/two-channel-relay-module-arduino-tutorial/
 
 Two channel relay:
@@ -86,6 +97,9 @@ mosquitto_pub -t 'test/topic' -m 'helloWorld'
 
 ------------
 Links:
+https://www.switchedonnetwork.com/2018/06/25/smart-letterbox-push-notifications-raspberry-pi-zero/
+https://www.ryansouthgate.com/2015/08/10/raspberry-pi-door-sensor/
+
 https://github.com/shawn-peterson/GarageDoorPi
 https://github.com/andrewshilliday/garage-door-controller
 https://github.com/jerrod-lankford/GarageQTPi
@@ -97,6 +111,7 @@ https://github.com/ide/pico-garage-door-sensor/blob/main/src/debounce.py
 https://github.com/shrocky2/SiriGarage
 
 https://python-hassdevice.readthedocs.io/en/stable/_modules/hassdevice/devices.html
+https://gyandeeps.com/garage-operations-raspberrypi/
 
 https://core-electronics.com.au/projects/wifi-garage-door-controller-with-raspberry-pi-pico-w-smart-home-project/
 https://github.com/geerlingguy/pico-w-garage-door-sensor/tree/2d8f9dbb9d9e091c77c314781c34cf07a701e2f1/micropython
