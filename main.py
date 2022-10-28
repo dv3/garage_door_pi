@@ -3,10 +3,8 @@
 """
 target version Python 3.9.2
 """
-import os
 import logging
 import json
-import lib
 from controller import Controller
 from garage_door import GarageDoor
 from mqtt_helper import MQTT_Helper
@@ -46,7 +44,6 @@ def parseConfig():
 def main():
     setup_logger()
     logger.info("starting main()")
-    lib.log()
     configs = parseConfig()
     door1 = GarageDoor(configs['door'])
     mqtt_client = MQTT_Helper(configs, door1)
