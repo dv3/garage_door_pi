@@ -1,5 +1,7 @@
 # garage_door_pi
 
+## Requirements
+
 overall requirement:
 - don't break garage opener
 - don't break standard remote
@@ -27,26 +29,25 @@ home assistant integration:
 Technical requirement:
 - mqtt
 - webpage
-----------
-Config:
-# normally_closed is 0, normally open is 1
-state_pin_closed_value: 0
 
-----------
+## Config
+
+
+## magnetic reed switch
+black : NC
+brown : NO to GPIO input
+white : COM to GND
+
+N.C. means Normally Closed: 
+When the magnet together, the circuit is conductive( light on ); 
+When the magnet separates, the circuit is not conductive ( light off );
+N.O. means Normally Open: 
+When the magnet separates, the circuit is conductive( light on );
+When the magnet together, the circuit is not conductive ( light off ).
+
 https://www.amazon.com/Switch-Normally-Closed-Sensor-Applicable/dp/B07YW47395/ref=cm_cr_arp_d_product_top?ie=UTF8
 
-magnetic reed switch:
-brown : NO
-black : NC
-white : COM
-
-N.C. means Normally Closed: When the magnet together, the circuit is conductive( light on ); When the magnet separates, the circuit is not conductive ( light off );
-N.O. means Normally Open: When the magnet separates, the circuit is conductive( light on ); When the magnet together, the circuit is not conductive ( light off ).
-
-----------
-https://lastminuteengineers.com/two-channel-relay-module-arduino-tutorial/
-
-Two channel relay:
+## Two channel relay
 The relay module has two LEDs that indicate the status of the relay. When a relay is activated, the corresponding LED lights up.
 
 Control Pins:
@@ -60,28 +61,27 @@ COM terminal connects to the device you intend to control.
 NC terminal is normally connected to the COM terminal, unless you activate the relay, which breaks the connection.
 NO terminal is normally open, unless you activate the relay that connects it to the COM terminal.
 
----------------
+https://lastminuteengineers.com/two-channel-relay-module-arduino-tutorial/
 
-Raspbian:
+## OS Raspbian
 Run pinout command
 
------------
-Software  
+## Software
 
-Prereqs  
+## Dependencies
 - Raspberry pi 1
 - Python 3.x
 - pip
 
-Installation  
+## Installation  
 - git clone 
 - pip install -r requirements.txt
 - edit the configuration.yaml to set up mqtt (See below)
 - python main.py
 - To start the server on boot run sudo bash autostart_systemd.sh
+python -u /home/pi/garage_door_pi/main.py
 
------------
-Mosquitto broker:
+## MQTT Mosquitto broker:
 
 In separate terminal windows do the following:
 
