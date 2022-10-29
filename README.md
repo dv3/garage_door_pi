@@ -83,10 +83,19 @@ python -u /home/pi/garage_door_pi/main.py
 
 ## MQTT Mosquitto broker:
 
+#### Home Assistant
+status_topic: 'homeassistant/status'
+discovery_topic: 'homeassistant'
+server: 'mqtt://core-mosquitto:1883'
+base_topic: zigbee2mqtt
+
+#### Standalone
 In separate terminal windows do the following:
 
-Start the broker:
+download mosquitto broker:
+https://mosquitto.org/download/
 
+Start the broker:
 mosquitto
 Start the command line subscriber:
 
