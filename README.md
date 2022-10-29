@@ -74,7 +74,7 @@ Run pinout command
 - pip
 
 ## Installation  
-- git clone 
+- git clone https://github.com/dv3/garage_door_pi.git
 - pip install -r requirements.txt
 - edit the configuration.yaml to set up mqtt (See below)
 - python main.py

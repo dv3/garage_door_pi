@@ -30,7 +30,7 @@ def execute_command(door, command):
 
 
 class MQTT_Helper(object):
-    def _init__(self, config, door):
+    def __init__(self, config, door):
         self.door = door
         host = config['mqtt']['host']
         port = int(config['mqtt']['port'])
