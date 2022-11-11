@@ -51,6 +51,10 @@ def main():
         # Blocking call that processes network traffic, dispatches callbacks and handles reconnecting.
         # Other loop*() functions are available that give a threaded interface and a manual interface.
         mqtt_client.loop_forever()
+        # app = Flask(__name__)
+        # app.run(host='0.0.0.0', debug=False)
+        #from my_app import create_app
+        #app = create_app()
     except KeyboardInterrupt:
         mqtt_client.disconnect()
     finally:

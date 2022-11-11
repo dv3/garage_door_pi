@@ -81,15 +81,46 @@ Run pinout command
 - To start the server on boot run sudo bash autostart_systemd.sh
 python -u /home/pi/garage_door_pi/main.py
 
-## MQTT Mosquitto broker:
-
-#### Home Assistant
+## Home Assistant
 status_topic: 'homeassistant/status'
 discovery_topic: 'homeassistant'
 server: 'mqtt://core-mosquitto:1883'
 base_topic: zigbee2mqtt
 
-#### Standalone
+### Example configuration.yaml entry
+mqtt:
+  cover:
+    - name: "Garage Door"
+      device_class: garage
+      command_topic: "home-assistant/cover/set"
+      state_topic: "home-assistant/cover/state"
+      availability:
+        - topic: "home-assistant/cover/availability"
+      qos: 0
+      retain: false
+      payload_open: "OPEN"
+      payload_close: "CLOSE"
+      payload_stop: "STOP"
+      state_open: "open"
+      state_opening: "opening"
+      state_closed: "closed"
+      state_closing: "closing"
+      payload_available: "online"
+      payload_not_available: "offline"
+      optimistic: false
+
+cover:
+- platform: command_line
+  covers:
+    garage_door:
+      command_open: curl -X POST https://api.particle.io/v1/devices/YOURDEVICEID/setState -d arg="open" -d access_token=YOURACCESSTOKEN
+      command_close: curl -X POST https://api.particle.io/v1/devices/YOURDEVICEID/setState -d arg="close" -d access_token=YOURACCESSTOKEN
+      command_stop: curl -X POST https://api.particle.io/v1/devices/YOURDEVICEID/setState -d arg="stop" -d access_token=YOURACCESSTOKEN
+      friendly_name: Garage Door
+      
+## MQTT Mosquitto broker:
+
+#### Stand  alone
 In separate terminal windows do the following:
 
 download mosquitto broker:
@@ -109,6 +140,7 @@ Links:
 https://www.switchedonnetwork.com/2018/06/25/smart-letterbox-push-notifications-raspberry-pi-zero/
 https://www.ryansouthgate.com/2015/08/10/raspberry-pi-door-sensor/
 
+https://github.com/bg1000/GarageQTPi
 https://github.com/shawn-peterson/GarageDoorPi
 https://github.com/andrewshilliday/garage-door-controller
 https://github.com/jerrod-lankford/GarageQTPi

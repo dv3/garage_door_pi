@@ -41,7 +41,7 @@
         "port": "port",
         "user": "user",
         "password": "password",
-        "discovery": "true",
+        "discovery": "false",
         "discovery_prefix": "homeassistant",
         "state_topic": "home-assistant/cover",
         "command_topic": "home-assistant/cover/set"

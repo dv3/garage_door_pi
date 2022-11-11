@@ -34,14 +34,14 @@ class GarageDoor(object):
 
     def __init__(self, config):
         # config
-        self.relay_pin = config['relay_pin']
-        self.state_pin = config['state_pin']
-        self.id = config['id']
+        self.relay_pin = int(config['relay_pin'])
+        self.state_pin = int(config['state_pin'])
+        self.id = int(config['id'])
         self.name = config['name']
         # state_pin_closed_value = normally_closed = 0
-        self.state_pin_closed_value = config.get('state_pin_closed_value', 0)
-        self.time_to_close = config.get('approx_time_to_close', 10)
-        self.time_to_open = config.get('approx_time_to_open', 10)
+        self.state_pin_closed_value = int(config.get('state_pin_closed_value', 0))
+        self.time_to_close = int(config.get('approx_time_to_close', 10))
+        self.time_to_open = int(config.get('approx_time_to_open', 10))
         self.invert_relay = bool(config.get('invert_relay'))
 
         # Setup
