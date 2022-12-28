@@ -1,36 +1,6 @@
 {
     "config": {
-        "use_https": false,
-        "use_auth": true,
-        "use_alerts": true,
-        "use_openhab": false,
-        "use_ifttt": false,
-        "allow_api": false,
-        "api_key": "<static key here>"
-    },
-    "alerts": {
-        "time_to_wait": 10,
-        "alert_type": null,
-        "smtp": {
-            "smtphost": "<SMTP HOST>",
-            "smtpport": 587,
-            "smtp_tls": "True",
-            "username": "<USERNAME EMAIL ADDRESS>",
-            "password": "<PASSWORD>",
-            "to_email": "<TO EMAIL ADDRESS>",
-            "subject": "<EMAIL SUBJECT>"
-        },
-        "pushbullet": {
-            "access_token": "<ACCESS TOKEN>"
-        },
-        "pushover": {
-            "user_key": "<PUSHOVER USER KEY>",
-            "api_key": "<PUSHOVER API TOKEN/KEY>"
-        },
-        "telegram": {
-            "chat_id": "<CHAT_ID>",
-            "api_token": "<API_TOKEN>"
-        }
+        "use_https": false
     },
     "homeassistant": {
         "server": "",
