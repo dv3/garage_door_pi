@@ -76,10 +76,10 @@ Run pinout command
 ## Installation  
 - git clone https://github.com/dv3/garage_door_pi.git
 - pip install -r requirements.txt
-- edit the configuration.yaml to set up mqtt (See below)
-- python main.py
-- To start the server on boot run sudo bash autostart_systemd.sh
-python -u /home/pi/garage_door_pi/main.py
+- edit config.json in application
+- edit the configuration.yaml to set up mqtt in home assistant(See below)
+- to test un python -u /home/pi/garage_door_pi/main.py
+- To install run 'sudo bash autostart_systemd.sh'
 
 ## Home Assistant
 status_topic: 'homeassistant/status'
