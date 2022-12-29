@@ -25,7 +25,7 @@
         "ssl_cert": "/home/pi/garage-door-controller-cert/localhost.crt"
     },
     "door": {
-        "id": "main",
+        "id": "1",
         "name": "main",
         "relay_pin": 23,
         "state_pin": 27,

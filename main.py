@@ -4,9 +4,8 @@
 target version Python 3.9.2
 """
 import logging
-from logging.handlers import RotatingFileHandler
 import json
-from controller import Controller
+#from controller import Controller
 from garage_door import GarageDoor
 from mqtt_helper import MQTT_Helper
 

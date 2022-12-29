@@ -42,7 +42,7 @@ class MQTT_Helper(object):
         else:
             discovery_prefix = config['mqtt']['discovery_prefix']
 
-        clientID = "MQTTGarageDoor_" + binascii.b2a_hex(os.urandom(6))
+        clientID = "MQTTGarageDoor_" + str(binascii.b2a_hex(os.urandom(6)) )
         self.mqttc = mqtt.Client(client_id=clientID,
                                  clean_session=True, userdata=None, protocol=4)
 
@@ -51,7 +51,7 @@ class MQTT_Helper(object):
 
         # set topic
         if discovery is True:
-            base_topic = discovery_prefix + "/cover/" + door.id
+            base_topic = discovery_prefix + "/cover/" + str( door.id )
             config_topic = base_topic + "/config"
             config['command_topic'] = base_topic + "/set"
             config['state_topic'] = base_topic + "/state"
